@@ -1,32 +1,843 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sebastián Peralta</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sebastián Peralta | Portfolio</title>
     <style>
+        :root {
+            --bg: #0a0f1f;
+            --bg-soft: #10182f;
+            --card: rgba(255, 255, 255, 0.06);
+            --card-border: rgba(255, 255, 255, 0.12);
+            --text: #f3f7ff;
+            --muted: #a9b6d3;
+            --accent: #58a6ff;
+            --accent-2: #7c3aed;
+            --glow: rgba(88, 166, 255, 0.35);
+            --success: #34d399;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+            --radius: 22px;
+            --max-width: 1180px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: Arial;
-            background-color: #0f172a;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(88, 166, 255, 0.16), transparent 28%),
+                radial-gradient(circle at 80% 30%, rgba(124, 58, 237, 0.16), transparent 26%),
+                linear-gradient(180deg, #07101d 0%, #0a0f1f 45%, #08111d 100%);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: min(92%, var(--max-width));
+            margin: 0 auto;
+        }
+
+        .blur-orb {
+            position: fixed;
+            inset: auto;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.22;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            top: 120px;
+            left: -40px;
+            background: #58a6ff;
+        }
+
+        .orb-2 {
+            right: -60px;
+            top: 420px;
+            background: #7c3aed;
+        }
+
+        .orb-3 {
+            bottom: 80px;
+            left: 35%;
+            background: #34d399;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            backdrop-filter: blur(16px);
+            background: rgba(10, 15, 31, 0.65);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 78px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 22px;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
             color: white;
+            box-shadow: 0 12px 35px var(--glow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--card-border);
+            color: var(--text);
+        }
+
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 90px 0 70px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 36px;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: rgba(88, 166, 255, 0.12);
+            color: #cfe5ff;
+            border: 1px solid rgba(88, 166, 255, 0.22);
+            font-size: 0.92rem;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.8rem);
+            line-height: 1.02;
+            margin-bottom: 18px;
+            letter-spacing: -1.6px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff, #9fd0ff, #8f7dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-bottom: 28px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 34px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat h3 {
+            font-size: 1.55rem;
+            margin-bottom: 4px;
+        }
+
+        .stat p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        .hero-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+            border: 1px solid var(--card-border);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top right, rgba(88,166,255,0.18), transparent 34%);
+            pointer-events: none;
+        }
+
+        .profile-box {
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar {
+            width: 88px;
+            height: 88px;
+            border-radius: 24px;
+            display: grid;
+            place-items: center;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            margin-bottom: 18px;
+            box-shadow: 0 14px 40px rgba(88, 166, 255, 0.28);
+        }
+
+        .hero-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .hero-card p {
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #dbe8ff;
+            font-size: 0.93rem;
+            font-weight: 700;
+        }
+
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 32px 0 26px;
+        }
+
+        .section-title {
+            margin-bottom: 22px;
+        }
+
+        .section-title .eyebrow {
+            color: var(--accent);
+            font-size: 0.92rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        .section-title h2 {
+            font-size: clamp(1.8rem, 4vw, 2.7rem);
+            margin-bottom: 8px;
+        }
+
+        .section-title p {
+            color: var(--muted);
+            max-width: 760px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            transition: 0.28s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(88,166,255,0.3);
+        }
+
+        .icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 16px;
+            font-size: 1.35rem;
+            background: linear-gradient(135deg, rgba(88,166,255,0.22), rgba(124,58,237,0.2));
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 1.15rem;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 0.98rem;
+        }
+
+        .skills-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .skill-pill {
+            padding: 12px 16px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.09);
+            font-weight: 700;
+            color: #e6efff;
+            transition: 0.22s ease;
+        }
+
+        .skill-pill:hover {
+            transform: translateY(-2px);
+            background: rgba(88,166,255,0.14);
+            border-color: rgba(88,166,255,0.25);
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .project {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project::after {
+            content: "";
+            position: absolute;
+            inset: auto -30% -30% auto;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(88,166,255,0.18), transparent 65%);
+            pointer-events: none;
+        }
+
+        .project h3 {
+            margin-bottom: 8px;
+        }
+
+        .project p {
+            margin-bottom: 16px;
+        }
+
+        .project .mini-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .project .mini-tags span {
+            padding: 7px 11px;
+            font-size: 0.85rem;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #d6e5ff;
+            font-weight: 700;
+        }
+
+        .timeline {
+            display: grid;
+            gap: 16px;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 16px;
+            align-items: start;
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-year {
+            color: var(--accent);
+            font-weight: 900;
+            font-size: 0.95rem;
+            letter-spacing: 0.8px;
+            padding-top: 4px;
+        }
+
+        .timeline-content h3 {
+            margin-bottom: 6px;
+        }
+
+        .timeline-content p {
+            color: var(--muted);
+        }
+
+        .cta {
+            margin-top: 18px;
+            background: linear-gradient(135deg, rgba(88,166,255,0.16), rgba(124,58,237,0.16));
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px;
+            padding: 34px;
             text-align: center;
-            padding: 50px;
+            box-shadow: var(--shadow);
         }
-        h1 {
-            color: #38bdf8;
+
+        .cta h2 {
+            font-size: clamp(1.7rem, 4vw, 2.6rem);
+            margin-bottom: 10px;
         }
-        .box {
-            max-width: 600px;
-            margin: auto;
+
+        .cta p {
+            max-width: 720px;
+            margin: 0 auto 18px;
+            color: var(--muted);
+        }
+
+        footer {
+            padding: 34px 0 46px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 980px) {
+            .hero-grid,
+            .grid-3,
+            .projects {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .nav {
+                flex-direction: column;
+                gap: 14px;
+                padding: 14px 0;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding-top: 64px;
+            }
+
+            .hero-card,
+            .card,
+            .cta {
+                padding: 22px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>Sebastián Peralta</h1>
-        <p>Software Developer</p>
-        <p>C++, Java, SQL, HTML</p>
-        <p>Focused on problem solving and backend development</p>
-    </div>
+    <div class="blur-orb orb-1"></div>
+    <div class="blur-orb orb-2"></div>
+    <div class="blur-orb orb-3"></div>
+
+    <header>
+        <div class="container nav">
+            <div class="logo">Sebastián<span>.</span></div>
+            <nav class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+                <a class="btn btn-secondary" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="fade-up">
+                    <span class="badge">Software Developer Portfolio</span>
+                    <h1>
+                        Building <span class="gradient-text">efficient solutions</span><br />
+                        through logic, code, and system thinking.
+                    </h1>
+                    <p>
+                        I work with C++, Java, SQL, and HTML, combining backend logic, database design,
+                        and low-level programming foundations to create clean, well-structured solutions.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#projects">View Projects</a>
+                        <a class="btn btn-secondary" href="#contact">Get in Touch</a>
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat">
+                            <h3>4+</h3>
+                            <p>Main technologies</p>
+                        </div>
+                        <div class="stat">
+                            <h3>Logic</h3>
+                            <p>Structured problem solving</p>
+                        </div>
+                        <div class="stat">
+                            <h3>Code</h3>
+                            <p>Clean and efficient approach</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-card fade-up">
+                    <div class="profile-box">
+                        <div class="avatar">SP</div>
+                        <h2>Sebastián Peralta Neme</h2>
+                        <p>
+                            Focused on software development, low-level programming, backend logic,
+                            and building structured solutions from scratch.
+                        </p>
+                        <div class="tag-list">
+                            <span class="tag">C++</span>
+                            <span class="tag">Java</span>
+                            <span class="tag">SQL</span>
+                            <span class="tag">HTML</span>
+                            <span class="tag">Algorithms</span>
+                            <span class="tag">Backend</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <div class="section-title fade-up">
+                    <span class="eyebrow">About Me</span>
+                    <h2>More than code — I like understanding how systems work.</h2>
+                    <p>
+                        My focus is on software development, low-level programming, and problem-solving,
+                        with a strong interest in memory management, backend logic, databases,
+                        algorithms, and system-level understanding.
+                    </p>
+                </div>
+
+                <div class="grid-3">
+                    <div class="card fade-up">
+                        <div class="icon">⚙️</div>
+                        <h3>System Understanding</h3>
+                        <p>
+                            I enjoy going beyond surface-level development and understanding how software
+                            behaves internally, from logic flow to memory and performance.
+                        </p>
+                    </div>
+
+                    <div class="card fade-up">
+                        <div class="icon">🧠</div>
+                        <h3>Problem Solving</h3>
+                        <p>
+                            I approach challenges with structured thinking, breaking problems into
+                            manageable parts and building solutions step by step.
+                        </p>
+                    </div>
+
+                    <div class="card fade-up">
+                        <div class="icon">🚀</div>
+                        <h3>Continuous Improvement</h3>
+                        <p>
+                            Discipline, consistency, and learning are central to my growth.
+                            I aim to keep sharpening both technical and analytical skills.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="container">
+                <div class="section-title fade-up">
+                    <span class="eyebrow">Core Skills</span>
+                    <h2>Technologies and areas I work with.</h2>
+                    <p>
+                        These are the main tools and concepts that define my current technical profile.
+                    </p>
+                </div>
+
+                <div class="skills-wrap fade-up">
+                    <span class="skill-pill">C++</span>
+                    <span class="skill-pill">Java</span>
+                    <span class="skill-pill">SQL</span>
+                    <span class="skill-pill">HTML</span>
+                    <span class="skill-pill">Memory Management</span>
+                    <span class="skill-pill">Algorithms</span>
+                    <span class="skill-pill">Data Structures</span>
+                    <span class="skill-pill">Backend Development</span>
+                    <span class="skill-pill">Database Design</span>
+                    <span class="skill-pill">Computer Architecture</span>
+                    <span class="skill-pill">Low-Level Programming</span>
+                    <span class="skill-pill">Problem Solving</span>
+                    <span class="skill-pill">Logical Thinking</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="container">
+                <div class="section-title fade-up">
+                    <span class="eyebrow">Projects</span>
+                    <h2>Highlighted work and academic development.</h2>
+                    <p>
+                        Replace these examples with your real projects, assignments, GitHub repositories,
+                        or technical exercises.
+                    </p>
+                </div>
+
+                <div class="projects">
+                    <div class="card project fade-up">
+                        <h3>Pointer-Based String Manipulation</h3>
+                        <p>
+                            A C++ project focused on string operations using pointers only, without relying
+                            on high-level built-in abstractions.
+                        </p>
+                        <div class="mini-tags">
+                            <span>C++</span>
+                            <span>Pointers</span>
+                            <span>Memory</span>
+                        </div>
+                    </div>
+
+                    <div class="card project fade-up">
+                        <h3>Relational Database Practice</h3>
+                        <p>
+                            SQL exercises and database logic involving queries, structured data modeling,
+                            and problem-solving with relational information.
+                        </p>
+                        <div class="mini-tags">
+                            <span>SQL</span>
+                            <span>Databases</span>
+                            <span>Logic</span>
+                        </div>
+                    </div>
+
+                    <div class="card project fade-up">
+                        <h3>Java Logic and Structured Programming</h3>
+                        <p>
+                            Development of programs focused on logical flow, modular design,
+                            and backend-oriented thinking using Java.
+                        </p>
+                        <div class="mini-tags">
+                            <span>Java</span>
+                            <span>OOP</span>
+                            <span>Structure</span>
+                        </div>
+                    </div>
+
+                    <div class="card project fade-up">
+                        <h3>Personal Portfolio Landing Page</h3>
+                        <p>
+                            A modern landing page built with HTML and CSS to showcase profile,
+                            skills, projects, and professional identity online.
+                        </p>
+                        <div class="mini-tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>UI</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="container">
+                <div class="section-title fade-up">
+                    <span class="eyebrow">Journey</span>
+                    <h2>Technical growth path.</h2>
+                    <p>
+                        A simple way to present your current direction and how your profile is evolving.
+                    </p>
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item fade-up">
+                        <div class="timeline-year">Stage 01</div>
+                        <div class="timeline-content">
+                            <h3>Programming foundations</h3>
+                            <p>
+                                Building solid fundamentals in logic, algorithms, data structures, and
+                                low-level understanding through C++ and structured exercises.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item fade-up">
+                        <div class="timeline-year">Stage 02</div>
+                        <div class="timeline-content">
+                            <h3>Backend and data logic</h3>
+                            <p>
+                                Expanding into Java and SQL to strengthen application logic,
+                                data handling, and structured development practices.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item fade-up">
+                        <div class="timeline-year">Stage 03</div>
+                        <div class="timeline-content">
+                            <h3>Professional projection</h3>
+                            <p>
+                                Creating a visible online presence through GitHub, LinkedIn,
+                                and a personal landing page to showcase technical identity and progress.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cta fade-up" id="contact">
+                    <h2>Let’s connect.</h2>
+                    <p>
+                        You can replace the links below with your real LinkedIn, GitHub, and email
+                        before publishing the page.
+                    </p>
+                    <div class="hero-actions" style="justify-content:center; margin-bottom:0;">
+                        <a class="btn btn-primary" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a class="btn btn-secondary" href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a>
+                        <a class="btn btn-secondary" href="mailto:sebastian@example.com">Email</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            © 2026 Sebastián Peralta Neme. Built with HTML & CSS.
+        </div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("show");
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+    </script>
 </body>
 </html>
